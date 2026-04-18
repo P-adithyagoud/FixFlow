@@ -12,5 +12,19 @@
     "promoted": true,
     "first_seen": "2026-04-19T02:51:26Z",
     "last_seen": "2026-04-19T02:53:38Z"
+  },
+  "api|timeouts": {
+    "frequency": 2,
+    "root_cause": "PostgreSQL connection pool exhaustion or slow queries",
+    "promoted": false,
+    "first_seen": "2026-04-19T02:57:35Z",
+    "last_seen": "2026-04-19T02:59:11Z"
+  },
+  "200ms|2500ms|affects|after|ago|all|api|cluster|connection|correlates|cpu|current|dependency|endpoints|error|external|from|high|investigation|issues|last|latency|mechanism|memory|middleware|min|minutes|new|observations|partially|pod|pooling|rate|rerouted|response|spike|stable|state|times|timing|traffic|under|upgraded|usage": {
+    "frequency": 2,
+    "root_cause": "Potential issue with new connection pooling mechanism in middleware v3.0",
+    "promoted": false,
+    "first_seen": "2026-04-19T03:00:25Z",
+    "last_seen": "2026-04-19T03:05:01Z"
   }
 }

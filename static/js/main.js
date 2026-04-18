@@ -116,10 +116,18 @@ class UIController {
     renderResults(data, isFallback = false) {
         this.resultData = data;
         
-        // Meta Badges (SEV, Mode, Confidence)
+        // Meta Badges (SEV, Complexity, Mode, Confidence)
+        const complexityColors = {
+            'easy': 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+            'medium': 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+            'hard': 'bg-orange-500/20 text-orange-400 border-orange-500/30'
+        };
+        const compClass = complexityColors[(data.complexity || 'medium').toLowerCase()] || complexityColors['medium'];
+
         const badgeContainer = document.getElementById('meta-badges');
         badgeContainer.innerHTML = `
             <span class="px-3 py-1 bg-red-500/20 text-red-400 text-xs font-bold rounded-lg border border-red-500/30 uppercase tracking-widest">${data.severity || 'SEV2'}</span>
+            <span class="px-3 py-1 ${compClass} text-xs font-bold rounded-lg border uppercase tracking-widest">${data.complexity || 'MEDIUM'} FIX</span>
             <span class="px-3 py-1 bg-purple-500/20 text-purple-400 text-xs font-bold rounded-lg border border-purple-500/30 uppercase tracking-widest">MODE: ${data.mode || 'NEW'}</span>
             <span class="px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-bold rounded-lg border border-blue-500/30 uppercase tracking-widest">${data.confidence || 'Medium'} CONFIDENCE</span>
         `;

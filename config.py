@@ -30,9 +30,17 @@ class Config:
     - SEV3: Minor or non-critical issue
 
     ---
+    RESOLUTION COMPLEXITY (STRICT)
+    - EASY: Known issue, quick fix (<10 minutes), low risk.
+    - MEDIUM: Requires investigation or multiple steps (10-30 minutes).
+    - HARD: Complex debugging, multiple systems, high uncertainty (>30 minutes).
+    Base on: Number of systems, root cause clarity, and action count.
+
+    ---
     OUTPUT (STRICT JSON ONLY)
     {
       "severity": "SEV1 | SEV2 | SEV3",
+      "complexity": "easy | medium | hard",
       "confidence": "High | Medium | Low",
       "confidence_score": 0-100,
       "mode": "matched | partial | new",
@@ -62,6 +70,7 @@ class Config:
 
     FALLBACK_RESPONSE = {
         "severity": "SEV2",
+        "complexity": "medium",
         "confidence": "Low",
         "mode": "new",
         "summary": "Analysis fallback triggered.",
