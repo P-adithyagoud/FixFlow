@@ -99,32 +99,38 @@ If the API fails, the system automatically returns a demo response:
 ## Project Structure
 
 ```
-├── app.py                    # Flask backend
-├── requirements.txt          # Dependencies
-├── .env                      # API key (create this)
-├── .env.example             # Template
+├── app.py                    # Main entry point (Flask routes)
+├── config.py                 # Centralized configuration & prompts
+├── services/                 # Backend business logic
+│   ├── ai_service.py         # Groq API interaction
+│   ├── validator.py          # Input validation
+│   └── parser.py             # JSON response cleanup
+├── static/
+│   ├── css/
+│   │   └── style.css         # Custom animations & glassmorphism
+│   └── js/
+│       ├── api.js            # Backend communication module
+│       └── main.js           # UI state & DOM management
 ├── templates/
-│   └── index.html           # TailwindCSS UI
-└── static/
-    └── script.js            # Client logic
+│   └── index.html            # Main dashboard (Jinja2)
+├── requirements.txt          # Dependencies
+└── .env                      # API keys (gitignored)
 ```
 
-## Configuration
+## Configuration & Tuning
 
 ### Environment Variables
-
+Edit `.env` to set your Groq API key:
 ```env
 GROQ_API_KEY=gsk_xxxxxxxxxxxxx
 ```
 
-Get free key: https://console.groq.com/keys
-
-### Tuning
-
-Edit `SYSTEM_PROMPT` in `app.py` to change LLM behavior:
-- Adjust temperature (currently 0.2 for deterministic)
-- Change max_tokens (currently 500)
-- Modify response format requirements
+### Tuning LLM Behavior
+Modify `config.py` to change:
+- **Model**: Currently `mixtral-8x7b-32768`
+- **Temperature**: Currently `0.2` (deterministic)
+- **Max Tokens**: Currently `800`
+- **System Prompt**: Adjust the rules for analysis and JSON formatting
 
 ## Demo Flow (Hackathon)
 
