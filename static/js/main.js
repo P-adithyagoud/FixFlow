@@ -154,14 +154,19 @@ class UIController {
         if (data.similar_incidents && data.similar_incidents.length > 0) {
             similarContainer.classList.remove('hidden');
             similarList.innerHTML = data.similar_incidents.map(inc => `
-                <div class="p-4 bg-white/5 border border-white/10 rounded-xl hover:border-blue-500/30 transition-colors">
-                    <div class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-2 flex items-center gap-2">
-                        <i class="fas fa-database"></i> KEDB Correlation
+                <div class="relative p-4 bg-white/5 border ${inc.is_primary_match ? 'border-blue-500/50 ring-1 ring-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.2)]' : 'border-white/10'} rounded-xl hover:border-blue-500/30 transition-all duration-300">
+                    ${inc.is_primary_match ? `
+                        <div class="absolute -top-3 -right-3 bg-blue-600 text-white text-[9px] font-bold px-2 py-1 rounded-full shadow-lg flex items-center gap-1 animate-bounce">
+                            <i class="fas fa-link"></i> PRIMARY MAPPING
+                        </div>
+                    ` : ''}
+                    <div class="text-[10px] font-bold ${inc.source === 'LOCAL KEDB' ? 'text-blue-400' : 'text-purple-400'} uppercase tracking-widest mb-2 flex items-center gap-2">
+                        <i class="fas ${inc.source === 'LOCAL KEDB' ? 'fa-database' : 'fa-cloud'}"></i> ${inc.source || 'KEDB Correlation'}
                     </div>
-                    <div class="text-sm font-bold text-white mb-2 truncate">${this.escape(inc.issue)}</div>
+                    <div class="text-sm font-bold text-white mb-2 truncate" title="${this.escape(inc.issue)}">${this.escape(inc.issue)}</div>
                     <div class="grid grid-cols-1 gap-2 mt-3 pt-3 border-t border-white/10">
                         <div>
-                            <div class="text-[9px] uppercase text-gray-500 font-bold">Standard Fix</div>
+                            <div class="text-[9px] uppercase text-gray-500 font-bold">Standard Fix Applied</div>
                             <div class="text-xs text-gray-300 line-clamp-2">${this.escape(inc.resolution)}</div>
                         </div>
                     </div>

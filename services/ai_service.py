@@ -17,8 +17,15 @@ class AIService:
         # Build candidate knowledge base for AI ranking
         candidate_context = ""
         for i, inc in enumerate(candidate_pool):
-            # Label the source for better AI understanding
+            # The first 3 come from local_candidates, next 3 from cloud_candidates in app.py
+            # Since local is mapped first in app.py: candidate_pool = local_candidates + cloud_candidates
+            source = "LOCAL KEDB" if i < len(candidate_pool)-3 else "CLOUD ARCHIVE" 
+            # Actually, local_candidates is length 3. So first 3 are Local.
+            # Let's be more explicit if possible, but for now we follow the app.py logic.
+            # In app.py: local_candidates (top 3) + cloud_candidates (top 3)
+            # So i < 3 is LOCAL KEDB.
             source = "LOCAL KEDB" if i < 3 else "CLOUD ARCHIVE"
+            
             candidate_context += f"\n[CANDIDATE {i+1} - {source}]:\n- Issue: {inc.get('issue')}\n- Cause: {inc.get('root_cause')}\n- Fix: {inc.get('resolution')}\n"
 
         system_instruction = Config.SYSTEM_PROMPT
@@ -42,7 +49,9 @@ class AIService:
                 
                 if response.status_code == 200:
                     return response.json()['choices'][0]['message']['content']
-                return None
+                else:
+                    print(f"Groq API Error {response.status_code}: {response.text}")
+                    return None
         except Exception as e:
             print(f"Expert Engine Error: {str(e)}")
             return None
