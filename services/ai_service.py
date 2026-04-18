@@ -3,17 +3,25 @@ import httpx
 from config import Config
 
 class AIService:
+    """
+    SRE Expert Engine: Conducts intelligent analysis using Groq infrastructure.
+    Refactored for clarity, functionality remains unchanged.
+    """
+
     @staticmethod
-    def analyze_incident(query, context_incidents):
+    def generate_resolution_analysis(query, matched_knowledge):
+        """Generates a detailed incident report using RAG-lite context."""
         client_key = os.getenv("GROQ_API_KEY")
         if not client_key:
             return None
 
-        knowledge_context = ""
-        for i, inc in enumerate(context_incidents):
-            knowledge_context += f"\n[Case {i+1}]:\nIssue: {inc['issue']}\nRoot Cause: {inc['root_cause']}\nResolution: {inc['resolution']}\n"
+        # Build context from past historical data
+        past_cases = ""
+        for i, inc in enumerate(matched_knowledge):
+            past_cases += f"\n[PAST CASE {i+1}]:\n- Issue: {inc['issue']}\n- Cause: {inc['root_cause']}\n- Fix: {inc['resolution']}\n"
 
-        user_content = f"CONTEXT:\n{knowledge_context}\n\nCURRENT ISSUE:\n{query}"
+        system_instruction = Config.SYSTEM_PROMPT
+        user_input = f"HISTORICAL KNOWLEDGE BASE:\n{past_cases}\n\nCURRENT PRODUCTION ISSUE:\n{query}"
 
         try:
             with httpx.Client(timeout=30.0) as client:
@@ -23,16 +31,17 @@ class AIService:
                     json={
                         "model": Config.MODEL_NAME,
                         "messages": [
-                            {"role": "system", "content": Config.SYSTEM_PROMPT},
-                            {"role": "user", "content": user_content}
+                            {"role": "system", "content": system_instruction},
+                            {"role": "user", "content": user_input}
                         ],
                         "temperature": Config.TEMPERATURE,
                         "max_tokens": Config.MAX_TOKENS
                     }
                 )
+                
                 if response.status_code == 200:
                     return response.json()['choices'][0]['message']['content']
                 return None
         except Exception as e:
-            print(f"AI Error: {str(e)}")
+            print(f"Expert Engine Error: {str(e)}")
             return None
