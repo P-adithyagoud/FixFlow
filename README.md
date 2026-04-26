@@ -74,7 +74,7 @@ When an incident is submitted, the **IncidentPipeline** triggers a 5-stage orche
 
 ---
 
-## 🏆 Hackathon Winning Edge
+
 
 - **Context-Aware**: Unlike generic LLM tools, this system *remembers* past outages.
 - **Deterministic UX**: Every action (Immediate, Resolution, Summary) is designed to be executable.
@@ -82,4 +82,3 @@ When an incident is submitted, the **IncidentPipeline** triggers a 5-stage orche
 
 ---
 
-**Built by Antigravity for the GNIT-HACKATHON.** 🚀
